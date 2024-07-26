@@ -1,5 +1,3 @@
----
-
 **360-Assessment**
 
 A comprehensive Employee Performance Management System designed to facilitate 360-degree feedback. This app enables multi-source feedback collection, analysis, and visualization to support employee development and performance evaluation. It features a user-friendly interface, integration with popular UI kits, and dynamic data representation using ApexCharts.
@@ -18,5 +16,3 @@ Technologies:
 - PrimeNG
 - ApexCharts
 - Bootswatch
-
----
