@@ -1,0 +1,17 @@
+{
+  "annotations": {
+    "changelogDate": "20240623121505"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "teachothername",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "TeachOtherType",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

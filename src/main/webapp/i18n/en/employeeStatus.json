@@ -1,0 +1,9 @@
+{
+  "hrmsApp": {
+    "EmployeeStatus": {
+      "null": "",
+      "CONFIRM": "CONFIRM",
+      "NONCONFIRM": "NONCONFIRM"
+    }
+  }
+}

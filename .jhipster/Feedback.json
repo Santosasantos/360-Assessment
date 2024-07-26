@@ -1,0 +1,49 @@
+{
+  "annotations": {
+    "changelogDate": "20240623121458"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "requestDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "responseDate",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "name": "Feedback",
+  "pagination": "infinite-scroll",
+  "relationships": [
+    {
+      "otherEntityField": "pin",
+      "otherEntityName": "employee",
+      "relationshipName": "requesters",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "pin",
+      "otherEntityName": "employee",
+      "relationshipName": "responders",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "year",
+      "otherEntityName": "year",
+      "relationshipName": "sessions",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

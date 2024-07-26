@@ -1,0 +1,29 @@
+{
+  "annotations": {
+    "changelogDate": "20240708075635"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "question",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "questionfeedback",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Extraquestion",
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "feedback",
+      "relationshipName": "extras",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

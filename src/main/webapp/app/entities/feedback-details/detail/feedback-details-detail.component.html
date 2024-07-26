@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (feedbackDetails()) {
+      <div>
+        <h2 data-cy="feedbackDetailsDetailsHeading"><span jhiTranslate="hrmsApp.feedbackDetails.detail.title">Feedback Details</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ feedbackDetails()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrmsApp.feedbackDetails.commentsforfeedbacksubtype">Commentsforfeedbacksubtype</span></dt>
+          <dd>
+            <span>{{ feedbackDetails()!.commentsforfeedbacksubtype }}</span>
+          </dd>
+          <dt><span jhiTranslate="hrmsApp.feedbackDetails.feedbackdetails">Feedbackdetails</span></dt>
+          <dd>
+            @if (feedbackDetails()!.feedbackdetails) {
+              <div>
+                <a [routerLink]="['/feedback', feedbackDetails()!.feedbackdetails?.id, 'view']">{{
+                  feedbackDetails()!.feedbackdetails?.id
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="hrmsApp.feedbackDetails.feedbacksubtypes">Feedbacksubtypes</span></dt>
+          <dd>
+            @if (feedbackDetails()!.feedbacksubtypes) {
+              <div>
+                <a [routerLink]="['/feedback-sub-type', feedbackDetails()!.feedbacksubtypes?.id, 'view']">{{
+                  feedbackDetails()!.feedbacksubtypes?.feedbacksubname
+                }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="hrmsApp.feedbackDetails.ratings">Ratings</span></dt>
+          <dd>
+            @if (feedbackDetails()!.ratings) {
+              <div>
+                <a [routerLink]="['/rating', feedbackDetails()!.ratings?.id, 'view']">{{ feedbackDetails()!.ratings?.rating }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/feedback-details', feedbackDetails()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

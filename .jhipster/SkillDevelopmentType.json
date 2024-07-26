@@ -1,0 +1,17 @@
+{
+  "annotations": {
+    "changelogDate": "20240623121503"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "skilldevelopmentname",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "SkillDevelopmentType",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}
