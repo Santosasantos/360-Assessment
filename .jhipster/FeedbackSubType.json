@@ -1,0 +1,30 @@
+{
+  "annotations": {
+    "changelogDate": "20240623121500"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "feedbacksubname",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "feedbackdescription",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "FeedbackSubType",
+  "relationships": [
+    {
+      "otherEntityField": "feedbackname",
+      "otherEntityName": "feedbackType",
+      "relationshipName": "feedbacktypes",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

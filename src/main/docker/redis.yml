@@ -1,0 +1,10 @@
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+name: hrms
+services:
+  redis:
+    image: redis:6.2-alpine
+    command: redis-server --requirepass hello
+    ports:
+      - 6379:6379
+#    volumes:
+#      - ~/volumes/jhipster/hrms/redis/:/data

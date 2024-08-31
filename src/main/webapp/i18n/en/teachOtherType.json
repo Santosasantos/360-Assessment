@@ -1,0 +1,24 @@
+{
+  "hrmsApp": {
+    "teachOtherType": {
+      "home": {
+        "title": "Teach Other Types",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Teach Other Type",
+        "createOrEditLabel": "Create or edit a Teach Other Type",
+        "notFound": "No Teach Other Types found"
+      },
+      "created": "A new Teach Other Type is created with identifier {{ param }}",
+      "updated": "A Teach Other Type is updated with identifier {{ param }}",
+      "deleted": "A Teach Other Type is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Teach Other Type {{ id }}?"
+      },
+      "detail": {
+        "title": "Teach Other Type"
+      },
+      "id": "ID",
+      "teachothername": "Teachothername"
+    }
+  }
+}

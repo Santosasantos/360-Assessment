@@ -1,0 +1,340 @@
+<div class="info-card card" *ngIf="!isLoading" style="min-height: ">
+  <div class="m-3">
+    <h2 class="text-center mb-4">360° Feedback Assessment Form</h2>
+
+    <p-stepper #stepper [(activeStep)]="active">
+      <p-stepperPanel header="Introduction">
+        <ng-template pTemplate="content">
+          <div class="row justify-content-center m-2">
+            <div class="col-12 col-lg-10">
+              <div class="card assessment-card">
+                <div class="card-body">
+                  <h2 class="card-title">Feedback Assessment</h2>
+                  <h3 class="card-subtitle mb-3">{{feedback?.requesters?.firstname}} {{feedback?.requesters?.lastname}}</h3>
+
+                  <div class="employee-info">
+                    <div class="row align-items-center">
+                      <div class="col-4 col-sm-3 col-md-2">
+                        <img [src]="'data:' + feedback?.requesters?.profileContentType + ';base64,' + feedback?.requesters?.profile"
+                             (click)="openFile(feedback?.requesters?.profile!, feedback?.requesters?.profileContentType)"
+                             alt="Employee Profile"
+                             class="img-fluid rounded-circle">
+                      </div>
+                      <div class="col-8 col-sm-9 col-md-10">
+                        <p class="mb-1"><strong>Project:</strong> {{ feedback?.requesters?.project }}</p>
+                        <p class="mb-1"><strong>Category:</strong> {{ feedback?.requesters?.employeeCategory }}</p>
+                        <p class="mb-1"><strong>Designation:</strong> {{ feedback?.requesters?.designation }}</p>
+                        <p class="mb-1"><strong>Functional Designation:</strong> {{ feedback?.requesters?.functionalDesignation }}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p class="assessment-description">
+                    This assessment provides a comprehensive view of the employee's performance and skills. Please offer feedback based on your interactions.
+                  </p>
+
+                  <div class="row">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                      <div class="assessment-structure h-100">
+                        <h4>Assessment Structure</h4>
+                        <ul class="list-unstyled">
+                          <li><i class="fas fa-check-circle me-2"></i><strong>Part 1:</strong> Competency Based Feedback</li>
+                          <li><i class="fas fa-check-circle me-2"></i><strong>Part 2:</strong> Skills Based Feedback</li>
+                          <li><i class="fas fa-check-circle me-2"></i><strong>Part 3:</strong> Technical Skill Competency Evaluation</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="rating-scale h-100">
+                        <h4>Rating Scale</h4>
+                        <ul class="list-unstyled">
+                          <li *ngFor="let badges of badgeList; let i = index" class="mb-2 rating-item">
+                            <p-rating [ngModel]="i+1" [stars]="4" [readonly]="true" [cancel]="false"></p-rating>
+                            <span class="badge bg-{{badges}} ml-2">{{ratingList[i]}}</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p class="save-progress mt-3">
+                    You can save your progress at any time and continue later.
+                  </p>
+
+                  <div class="text-center mt-4">
+                    <button type="button" class="btn btn-primary btn-lg" (click)="next()">
+                      Start Assessment <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </ng-template>
+  </p-stepperPanel>
+      <p-stepperPanel header="Part 1: Competency Based Feedback">
+        <ng-template pTemplate="content">
+          <div class="feedback-container">
+            <h3 class="mb-4">Employee Performance Assessment</h3>
+            <p class="text-muted mb-4">Please provide your honest feedback for each competency. Your input is valuable for the employee's growth and development.</p>
+
+            <form [formGroup]="requestForm">
+              <div formArrayName="feedbackForm">
+                <div *ngFor="let control of feedbackForm.controls; let i = index" [formGroupName]="i" class="feedback-item mb-5">
+                  <h4 class="competency-title">{{ feedbackSubTypesSharedCollection[i]?.feedbacksubname }}</h4>
+                  <p class="competency-description text-muted mb-3">{{ feedbackSubTypesSharedCollection[i]?.feedbackdescription }}</p>
+
+                  <div class="rating-container mb-3">
+                    <p-rating formControlName="ratings" [cancel]="false" [stars]="4" (onRate)="onRate($event, i)"/>
+                    @if(getRatingText(control.get('ratings')?.value) === 'Always'){
+                      <span class="badge bg-success">{{ getRatingText(control.get('ratings')?.value) }}</span>
+                    }
+                    @else if(getRatingText(control.get('ratings')?.value) === 'Almost Always'){
+                      <span class="badge bg-info">{{ getRatingText(control.get('ratings')?.value) }}</span>
+                    }
+                    @else if(getRatingText(control.get('ratings')?.value) === 'Occasionally'){
+                      <span class="badge bg-warning">{{ getRatingText(control.get('ratings')?.value) }}</span>
+                    }
+                    @else if(getRatingText(control.get('ratings')?.value) === 'Rarely'){
+                      <span class="badge bg-danger">{{ getRatingText(control.get('ratings')?.value) }}</span>
+                    }
+                  </div>
+
+                  <textarea pInputTextarea formControlName="commentsforfeedbacksubtype" placeholder="Provide specific examples or additional comments (Optional)" rows="3" class="form-control"></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="d-flex justify-content-between mt-5">
+            <button type="button" class="btn btn-outline-secondary" (click)="saveDraft()">
+              <i class="fas fa-save me-2"></i>Save Draft
+            </button>
+            <button type="button" class="btn btn-primary" (click)="next()">
+              Next <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+          </div>
+        </ng-template>
+      </p-stepperPanel>
+
+      <p-stepperPanel header="Part 2: Skills Based Feedback">
+        <ng-template pTemplate="content">
+          <div class="border p-3 rounded bg-light">
+            <form [formGroup]="requestForm">
+             <div class="skill-selection-container">
+              <div formGroupName="skillForm" class="form-group">
+                <label for="skillSelect" class="form-label">Select up to 5 skills</label>
+                <p-multiSelect
+                  #multiSelect
+                  id="skillSelect"
+                  formControlName="selectedSkills"
+                  [options]="skillDevelopmentTypesSharedCollection"
+                  optionLabel="skilldevelopmentname"
+                  [selectionLimit]="5"
+                  placeholder="Choose skills"
+                  [showToggleAll]="false"
+                  [showHeader]="false"
+                  styleClass="w-100 p-multiselect-custom"
+                  [panelStyleClass]="'p-multiselect-panel-custom'"
+                  (onChange)="onSkillChange($event)"
+                  (onPanelShow)="onDropdownShow()"
+                  (onPanelHide)="onDropdownHide()"
+                >
+                  <ng-template let-skill pTemplate="item">
+                    <div class="skill-item">
+                      {{skill.skilldevelopmentname}}
+                    </div>
+                  </ng-template>
+                </p-multiSelect>
+              </div>
+              <div #chipSection class="selected-skills mt-3">
+                <p-chip
+                  *ngFor="let skill of selectedSkills"
+                  [label]="skill.skilldevelopmentname"
+                  [removable]="true"
+                  (onRemove)="removeSkill(skill)"
+                ></p-chip>
+              </div>
+
+             </div>
+            </form>
+          </div>
+
+          <div class="d-flex justify-content-between mt-3">
+            <button type="button" class="btn btn-outline-secondary" (click)="prev()">
+              <i class="fas fa-arrow-left me-2"></i>Back
+            </button>
+            <button type="button" class="btn btn-outline-secondary" (click)="saveDraft()">
+              <i class="fas fa-save me-2"></i>Save As Draft
+            </button>
+            <button type="button" class="btn btn-primary" (click)="next()">
+              Next <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+          </div>
+        </ng-template>
+      </p-stepperPanel>
+
+      <p-stepperPanel header="Technical Skill Competency Evaluation">
+        <ng-template pTemplate="content">
+          <div class="card shadow-sm">
+            <div class="card-body bg-light">
+              <h5 class="card-title mb-4">Part 3: Technical Skills Assessment</h5>
+              <form [formGroup]="requestForm">
+                <div formGroupName="teachOtherForm">
+                  <div class="mb-3">
+                    <label for="technicalSkill" class="form-label">Primary Technical Expertise</label>
+                    <input id="technicalSkill" type="text" class="form-control" formControlName="technicalSkill" placeholder="e.g., Java Development, Data Analysis">
+                  </div>
+                  <div class="mb-3">
+                    <label for="recommendation" class="form-label">Would you recommend this individual as a technical mentor?</label>
+                    <p-dropdown id="recommendation" [options]="recommendOptions" formControlName="recommendation" (onChange)="onRecommendChange($event)" [style]="{'width':'100%'}" placeholder="Select an option"></p-dropdown>
+                  </div>
+                  <div *ngIf="showStrengthField" class="mb-3">
+                    <label for="particularStrengh" class="form-label">Area of Exceptional Proficiency</label>
+                    <input id="particularStrengh" class="form-control" formControlName="particularStrengh" placeholder="Describe their standout technical skill">
+                  </div>
+                  <div *ngIf="showWhyField" class="mb-3">
+                    <label for="whynotRecommend" class="form-label">Reason for Non-recommendation</label>
+                    <textarea id="whynotRecommend" class="form-control" formControlName="whynotRecommend" rows="3" placeholder="Please provide constructive feedback"></textarea>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between mt-4">
+            <button type="button" class="btn btn-outline-secondary" (click)="prev()">
+              <i class="fas fa-arrow-left me-2"></i>Previous
+            </button>
+            <button type="button" class="btn btn-outline-primary" (click)="saveDraft()">
+              <i class="fas fa-save me-2"></i>Save Draft
+            </button>
+            <button type="button" class="btn btn-primary" (click)="prepareReviewData(); next()">
+              Review <i class="fas fa-eye ms-2"></i>
+            </button>
+          </div>
+        </ng-template>
+      </p-stepperPanel>
+
+      <p-stepperPanel header="Review Your Assessment">
+        <ng-template pTemplate="content">
+          <div class="info-card p-4 bg-white rounded shadow-sm">
+            <h2 class="heading-2 mb-4">360° Feedback Summary</h2>
+
+            <!-- Feedback Details Section -->
+            <div class="mb-4">
+              <h3 class="heading-3 mb-3">Feedback Evaluation</h3>
+              <div class="p-3 border rounded">
+                <div *ngFor="let feedback of reviewData.feedbackDetails; let i = index" class="card mb-3 border-left border-warning">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <div class="flex-grow-1">
+                        <div class="heading-4 mb-2">Feedback Area: {{ feedbackSubTypesSharedCollection[i]?.feedbacksubname}}</div>
+                        <div class="text-muted mb-1" style="width: 70%; text-align: justify">{{ feedbackSubTypesSharedCollection[i]?.feedbackdescription }}</div>
+                        <p><strong>Comments:</strong> {{ feedback.commentsforfeedbacksubtype || 'No comments provided' }}</p>
+                      </div>
+                      <div class="br-1 box-color-self box-self m-2 text-center p-2 rounded">
+                        <div class="fso-3 bold">{{ feedback.ratings }} Out of 4</div>
+                        <div class="bold fso-2">Self Rating</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Selected Skills Section -->
+            <div class="mb-4">
+              <h3 class="heading-3 mb-3">Skills for Development</h3>
+              <div class="p-3 border rounded">
+                <ul class="list-unstyled">
+                  <li *ngFor="let skill of reviewData.selectedSkills" class="mb-2">
+                    <i class="fas fa-check-circle me-2"></i>{{ skill.skilldevelopmentname }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Teach Others Section -->
+            <div class="mb-4">
+              <h3 class="heading-3 mb-3">Technical Mentorship Potential</h3>
+              <div class="p-3 border rounded">
+                <p><strong>Technical Expertise:</strong>
+                  {{ reviewData.teachOtherDetails.technicalSkill }}
+                </p>
+                <p><strong>Recommendation for Mentorship:</strong>
+                  @if(reviewData.teachOtherDetails.recommendation === 'Yes'){
+                    <span class="badge bg-success">{{ reviewData.teachOtherDetails.recommendation }}</span>
+                  }
+                  @else if(reviewData.teachOtherDetails.recommendation === 'No'){
+                    <span class="badge bg-danger">{{ reviewData.teachOtherDetails.recommendation }}</span>
+                  }
+                  </p>
+                <p *ngIf="reviewData.teachOtherDetails.particularStrengh">
+                  <strong>Area of Exceptional Proficiency:</strong> {{ reviewData.teachOtherDetails.particularStrengh }}
+                </p>
+                <p *ngIf="reviewData.teachOtherDetails.whynotRecommend">
+                  <strong>Areas for Improvement:</strong> {{ reviewData.teachOtherDetails.whynotRecommend }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between mt-4">
+            <button type="button" class="btn btn-outline-secondary" (click)="prev()">
+              <i class="fas fa-arrow-left me-2"></i>Back To Previous
+            </button>
+            <button type="submit" class="btn btn-success" (click)="submit()">
+              Confirm and Submit <i class="fas fa-check ms-2"></i>
+            </button>
+          </div>
+        </ng-template>
+      </p-stepperPanel>
+    </p-stepper>
+  </div>
+</div>
+
+<div *ngIf="isLoading" class="info-card card">
+  <div class="card">
+    <div class="border-round border-1 surface-border p-4 surface-card">
+      <ul class="m-0 p-0 list-none">
+        <li class="mb-3">
+          <div class="flex">
+            <p-skeleton shape="circle" size="4rem" styleClass="mr-2" />
+            <div style="flex: 1">
+              <p-skeleton width="100%" styleClass="mb-2" />
+              <p-skeleton width="75%" />
+            </div>
+          </div>
+        </li>
+        <li class="mb-3">
+          <div class="flex">
+            <p-skeleton shape="circle" size="4rem" styleClass="mr-2" />
+            <div style="flex: 1">
+              <p-skeleton width="100%" styleClass="mb-2" />
+              <p-skeleton width="75%" />
+            </div>
+          </div>
+        </li>
+        <li class="mb-3">
+          <div class="flex">
+            <p-skeleton shape="circle" size="4rem" styleClass="mr-2" />
+            <div style="flex: 1">
+              <p-skeleton width="100%" styleClass="mb-2" />
+              <p-skeleton width="75%" />
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="flex">
+            <p-skeleton shape="circle" size="4rem" styleClass="mr-2" />
+            <div style="flex: 1">
+              <p-skeleton width="100%" styleClass="mb-2" />
+              <p-skeleton width="75%" />
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

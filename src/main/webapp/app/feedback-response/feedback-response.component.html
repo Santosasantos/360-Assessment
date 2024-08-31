@@ -1,0 +1,36 @@
+<div class="card">
+  <table class="table table-hover">
+    <thead>
+      <tr class="table-active">
+        <th>Feedback Requester </th>
+        <th>Request Date</th>
+        <th>Project</th>
+        <th>Current Office</th>
+        <th>Email</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (feedbackInfo of feedbackRequesters();track $index){
+        <tr>
+          <td>{{feedbackInfo.requesters?.firstname}}{{feedbackInfo.requesters?.lastname}} ({{feedbackInfo.requesters?.pin}})</td>
+          <td>{{feedbackInfo.requestDate}}</td>
+          <td>{{feedbackInfo.requesters?.project}}</td>
+          <td>{{feedbackInfo.requesters?.currentOffice}}</td>
+          <td>{{feedbackInfo.requesters?.email}}</td>
+          <td>
+            @if(feedbackInfo.status === 'PENDING'){
+              <button type="button" class="btn btn-warning " (click)="provideResponse(feedbackInfo.id)">Pending</button>
+            }
+            @else if(feedbackInfo.status === 'COMPLETED'){
+              <span class="badge bg-success">Complete</span>
+            }
+            @else if(feedbackInfo.status === 'DECLINED'){
+              <span class="badge bg-danger">Declined</span>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

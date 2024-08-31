@@ -1,0 +1,17 @@
+{
+  "annotations": {
+    "changelogDate": "20240623121507"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "year",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Year",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

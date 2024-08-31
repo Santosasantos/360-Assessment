@@ -1,0 +1,22 @@
+{
+  "annotations": {
+    "changelogDate": "20240623121506"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "rating",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "ratingvalue",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Rating",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}
